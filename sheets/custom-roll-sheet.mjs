@@ -1,25 +1,25 @@
 import { RollTypes } from "../enums.mjs";
 
 export default class CustomRollSheet extends ItemSheet {
-    /** @inheritdoc */
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ["heartcore", "sheet", "custom-roll"],
-            template: "systems/heartcore/templates/custom-roll-sheet.html",
-        });
-    }
+  /** @inheritdoc */
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["heartcore", "sheet", "custom-roll"],
+      template: "systems/heartcore/templates/custom-roll-sheet.html",
+    });
+  }
 
-    /** @inheritdoc */
-    async getData(options) {
-        const context = await super.getData(options);
+  /** @inheritdoc */
+  async getData(options) {
+    const context = await super.getData(options);
 
-        context.rollTypeOptions = {};
-        Object.keys(RollTypes).forEach((rollType) => {
-            context.rollTypeOptions[rollType] = RollTypes[rollType].DisplayName;
-        });
+    context.rollTypeOptions = {};
+    Object.keys(RollTypes).forEach((rollType) => {
+      context.rollTypeOptions[rollType] = RollTypes[rollType].DisplayName;
+    });
 
-        context.showToHit = context.data.system.rollType === "RollToDo";
+    context.showToHit = context.data.system.rollType === "RollToDo";
 
-        return context;
-    }
+    return context;
+  }
 }

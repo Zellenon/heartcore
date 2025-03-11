@@ -1,6 +1,8 @@
 <form class="flexcol {{cssClass}}" autocomplete="off">
     <header class="sheet-header">
-        <h1><input name="name" type="text" value="{{data.name}}" placeholder="Name" /></h1>
+        <h1>
+            <input name="name" type="text" value="{{data.name}}" placeholder="Name" />
+        </h1>
     </header>
     <section class="sheet-body">
         <div class="tab">
@@ -14,12 +16,14 @@
             {{#if showToHit}}
             <p>
                 <label class="custom-roll-to-hit-label" for="toHit">Bonus to Hit:</label>
-                <input type="text" name="system.formulaAddedToHit" id="toHit" value="{{data.system.formulaAddedToHit}}" />
+                <input type="text" name="system.formulaAddedToHit" id="toHit"
+                    value="{{data.system.formulaAddedToHit}}" />
             </p>
             {{/if}}
             <p>
                 <label class="custom-roll-to-effect-label" for="toEffect">Bonus to Effect:</label>
-                <input type="text" name="system.formulaAddedToEffect" id="toEffect" value="{{data.system.formulaAddedToEffect}}" />
+                <input type="text" name="system.formulaAddedToEffect" id="toEffect"
+                    value="{{data.system.formulaAddedToEffect}}" />
             </p>
         </div>
     </section>

@@ -4,21 +4,20 @@
  * @param slot
  */
 export default async function tryCreateCharacterMacro(data, slot) {
-    if (!data.actorId || !data.function) {
-        return;
-    }
+  if (!data.actorId || !data.function) {
+    return;
+  }
 
-    const argsLiteral = data.argsLiteral ?? "";
-    
-    const command =
-`const actor = game.actors.get("${data.actorId}");
-actor.${data.function}(${argsLiteral});`
+  const argsLiteral = data.argsLiteral ?? "";
 
-    const macro = await Macro.create({
-        name: data.macroName,
-        type: "script",
-        command: command
-    });
+  const command = `const actor = game.actors.get("${data.actorId}");
+actor.${data.function}(${argsLiteral});`;
 
-    game.user.assignHotbarMacro(macro, slot);
+  const macro = await Macro.create({
+    name: data.macroName,
+    type: "script",
+    command: command,
+  });
+
+  game.user.assignHotbarMacro(macro, slot);
 }
