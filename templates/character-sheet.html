@@ -14,6 +14,14 @@
                         <input type="number" name="system.health.max" value="{{data.system.health.max}}" />
                     </div>
                 </div>
+                <div class="header-field-stack health-stack">
+                    <label>Spirit:</label>
+                    <div class="health-bar">
+                        <input type="number" name="system.spirit.value" value="{{data.system.spirit.value}}" />
+                        <span> / </span>
+                        <input type="number" name="system.spirit.max" value="{{data.system.spirit.max}}" />
+                    </div>
+                </div>
                 <div class="header-field-stack speed-stack">
                     <label>Speed:</label>
                     <input type="number" name="system.speed" value="{{data.system.speed}}" />
@@ -24,21 +32,46 @@
                 </div>
             </div>
         </div>
+        <div class="flexrow" style="margin-right:1%">
+            <div class="flexcol">
+                <h3 style="text-align:center">Swing:</h3>
+                <p class="flexrow">
+                    <select class="swing-attribute-selector" name="system.swing.attributeId">
+                        {{#select data.system.swing.attributeId}}
+                        <option value={{AttributeIdNoSwing}}>None</option>
+                        {{#each attributes as |attribute index|}}
+                        {{#if (isStatusNormal attribute)}}
+                        <option value="{{attribute._id}}">{{attribute.name}}</option>
+                        {{/if}}
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                    {{#if showSwingValueInput}}
+                    <input type="number" class="swing-value" name="system.swing.value"
+                        value="{{data.system.swing.value}}" min="0" data-dtype="Number" />
+                    {{/if}}
+                </p>
+                <p><button class="button drop-swing" type="button" title="Drop Swing">Drop Swing</button></p>
+            </div>
+            <div class="flexcol" style="margin-left:8px">
+                <div class="flexrow">
+                    <p><button class="button roll-to-do" type="button" title="Roll to Do"><b>Do</b></button></p>
+                    <p><button class="button roll-to-dye" type="button" title="Roll to Dye"><b>Dye</b></button></p>
+                </div>
+                <p><button class="button recovery-roll" type="button" title="Recovery Roll">Recover</button></p>
+            </div>
+        </div>
     </header>
 
+
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="description">Description</a>
         <a class="item" data-tab="attributes">Attributes</a>
         <a class="item" data-tab="gifts">Gifts</a>
         <a class="item" data-tab="rolls">Rolls</a>
+        <a class="item" data-tab="description">Description</a>
     </nav>
 
     <section class="sheet-body">
-        <div class="tab description" data-group="primary" data-tab="description">
-            {{editor descriptionHTML target="system.description" button=true owner=owner editable=editable
-            engine="prosemirror"}}
-        </div>
-
         <div class="tab attributes" data-group="primary" data-tab="attributes">
             <header class="attributes-header flexrow">
                 <span class="attribute-name-column">Name</span>
@@ -50,30 +83,31 @@
             </header>
             <ol class="list attribute-list">
                 {{#each attributes as |attribute index|}}
-                <li class="attribute list-item flexrow" data-item-id="{{attribute._id}}">
-                    <p class="attribute-name attribute-name-column">
+                <li class="attribute list-item flexrow" data-item-id="{{attribute._id}}"
+                    style="vertical-align: middle;">
+                    <p class="attribute-name attribute-name-column" style="font-size=21px">
                         {{attribute.name}}
                         {{#if attribute.system.descriptiveName}}
                         ({{attribute.system.descriptiveName}})
                         {{/if}}
                     </p>
                     <p class="attribute-color attribute-color-column"
-                        style="background-color:{{attribute.system.color}}" />
+                        style="background-color:{{attribute.system.color}};height:30px" />
                     <p class="attribute-modifier-text attribute-modifier-column">+{{attribute.system.modifier}}</p>
                     <p class="attribute-status attribute-status-column">{{attribute.statusString}}</p>
-                    <div class="attribute-status-controls attribute-status-controls-column">
+                    <div class="flexrow attribute-status-controls attribute-status-controls-row">
                         {{#if attribute.showRestoreButton}}<button class="button attribute-restore" type="button"
-                            title="Restore">Restore</button>{{/if}}
+                            title="Restore"><i class="fas fa-medkit"></i></button>{{/if}}
                         {{#if attribute.showLockOutButton}}<button class="button attribute-lock-out" type="button"
-                            title="Lock Out">Lock Out</button>{{/if}}
+                            title="Lock Out"><i class="fas fa-lock"></i></button>{{/if}}
                         {{#if attribute.showWoundButton}}<button class="button attribute-wound" type="button"
-                            title="Wound">Wound</button>{{/if}}
+                            title="Wound"><i class="fa fa-heartbeat" aria-hidden="true"></i></button>{{/if}}
                     </div>
-                    <div class="attribute-controls attribute-controls-column">
-                        <a class="attribute-control attribute-open" title="Open Attribute"> <i class="fas fa-edit"></i>
-                            Open</a>
+                    <div class="attribute-controls attribute-controls-column flexrow">
+                        <a class="attribute-control attribute-open" title="Open Attribute"> <i
+                                class="fas fa-edit"></i></a>
                         <a class="attribute-control attribute-delete" title="Delete Attribute"> <i
-                                class="fas fa-trash"></i> Delete</a>
+                                class="fas fa-trash"></i></a>
                     </div>
                 </li>
                 {{/each}}
@@ -84,17 +118,6 @@
             </p>
             <hr class="solid">
             </hr>
-            <p><label>Swing:</label></p>
-            <p class="flexrow">
-                <select class="swing-attribute-selector" name="system.swing.attributeId">
-                    {{selectOptions swingAttributeOptions selected=data.system.swing.attributeId}}
-                </select>
-                {{#if showSwingValueInput}}
-                <input type="number" class="swing-value" name="system.swing.value" value="{{data.system.swing.value}}"
-                    min="0" data-dtype="Number" />
-                {{/if}}
-            </p>
-            <p><button class="button drop-swing" type="button" title="Drop Swing">Drop Swing</button></p>
             <p>
                 <input type="checkbox" class="enable-swing-token-images" id="enable-swing-token-images"
                     name="system.swingTokenImages.enabled" {{checked data.system.swingTokenImages.enabled}} />
@@ -121,9 +144,6 @@
             </p>
         </div>
         <div class="tab rolls" data-group="primary" data-tab="rolls">
-            <p><button class="button roll-to-do" type="button" title="Roll to Do">Roll to Do</button></p>
-            <p><button class="button roll-to-dye" type="button" title="Roll to Dye">Roll to Dye</button></p>
-            <p><button class="button recovery-roll" type="button" title="Recovery Roll">Recovery Roll</button></p>
             <h3>Custom Rolls:</h3>
             <header class="custom-rolls-header flexrow">
                 <span class="custom-roll-label-column">Label</span>
@@ -163,5 +183,11 @@
                     Custom Roll</a>
             </p>
         </div>
+
+        <div class="tab description" data-group="primary" data-tab="description">
+            {{editor descriptionHTML target="system.description" button=true owner=owner editable=editable
+            engine="prosemirror"}}
+        </div>
+
     </section>
 </form>
