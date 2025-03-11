@@ -1,12 +1,15 @@
 <form class="flexcol {{cssClass}}" autocomplete="off">
     <header class="sheet-header">
-        <img class="gift-image" src="{{data.img}}" data-edit="img" title="{{data.name}}"/>
-        <h1><input class="gift-name" name="name" type="text" value="{{data.name}}" placeholder="Name" /></h1>
+        <img class="gift-image" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+        <h1>
+            <input class="gift-name" name="name" type="text" value="{{data.name}}" placeholder="Name" />
+        </h1>
     </header>
 
     <section class="sheet-body">
         <div class="description" data-group="primary" data-tab="description">
-            {{editor descriptionHTML target="system.description" button=true owner=owner editable=editable engine="prosemirror"}}
+            {{editor descriptionHTML target="system.description" button=true
+            owner=owner editable=editable engine="prosemirror"}}
         </div>
     </section>
 </form>

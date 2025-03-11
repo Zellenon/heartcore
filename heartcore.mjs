@@ -1,7 +1,4 @@
-import {
-    AttributeData,
-    Attribute
-} from "./documents/attribute.mjs";
+import { AttributeData, Attribute } from "./documents/attribute.mjs";
 import AttributeSheet from "./sheets/attribute-sheet.mjs";
 
 import { GiftData } from "./documents/gift.mjs";
@@ -10,7 +7,7 @@ import GiftSheet from "./sheets/gift-sheet.mjs";
 import {
     AttributeIdNoSwing,
     CharacterData,
-    Character
+    Character,
 } from "./documents/character.mjs";
 import CharacterSheet from "./sheets/character-sheet.mjs";
 
@@ -20,56 +17,57 @@ import CustomRollSheet from "./sheets/custom-roll-sheet.mjs";
 import {
     RollTypes,
     AttributeStatus,
-    AttributeStatusStrings
-} from "./enums.mjs"
+    AttributeStatusStrings,
+} from "./enums.mjs";
 
-import tryCreateCharacterMacro from "./macro.mjs"
+import tryCreateCharacterMacro from "./macro.mjs";
 
-
-Hooks.once("init", async function () {
-    console.log(`Initializing Sentiment System`); 
+Hooks.once("init", async function() {
+    console.log(`Initializing Heartcore System`);
 
     CONFIG.Item.dataModels.attribute = AttributeData;
     CONFIG.Item.dataModels.gift = GiftData;
     CONFIG.Item.dataModels.customRoll = CustomRollData;
     CONFIG.Actor.dataModels.character = CharacterData;
     CONFIG.Actor.documentClass = Character;
-    CONFIG.Sentiment = {
+    CONFIG.Heartcore = {
         RollTypes,
         AttributeStatus,
         AttributeStatusStrings,
-        AttributeIdNoSwing
+        AttributeIdNoSwing,
     };
 
     Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("sentiment", AttributeSheet, {
+    Items.registerSheet("heartcore", AttributeSheet, {
         types: ["attribute"],
         makeDefault: true,
-        label: "Attribute Sheet"
+        label: "Attribute Sheet",
     });
-    Items.registerSheet("sentiment", GiftSheet, {
+    Items.registerSheet("heartcore", GiftSheet, {
         types: ["gift"],
         makeDefault: true,
-        label: "Gift Sheet"
+        label: "Gift Sheet",
     });
-    Items.registerSheet("sentiment", CustomRollSheet, {
+    Items.registerSheet("heartcore", CustomRollSheet, {
         types: ["customRoll"],
         makeDefault: true,
-        label: "Custom Roll Sheet"
+        label: "Custom Roll Sheet",
     });
 
     Actors.unregisterSheet("core", ActorSheet);
-    Actors.registerSheet("sentiment", CharacterSheet, {
+    Actors.registerSheet("heartcore", CharacterSheet, {
         types: ["character"],
         makeDefault: true,
-        label: "Character Sheet"
+        label: "Character Sheet",
     });
 
     Attribute.RegisterHandlebarsHelpers();
     Character.RegisterHandlebarsHelpers();
     CharacterSheet.RegisterHandlebarsHelpers();
 
-    await loadTemplates(["systems/sentiment/templates/partials/gift-list.html"]);
+    await loadTemplates(["systems/heartcore/templates/partials/gift-list.html"]);
 });
 
-Hooks.on("hotbarDrop", (bar, data, slot) => tryCreateCharacterMacro(data, slot));
+Hooks.on("hotbarDrop", (bar, data, slot) =>
+    tryCreateCharacterMacro(data, slot),
+);

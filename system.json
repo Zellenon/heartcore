@@ -1,25 +1,30 @@
 {
-  "id": "sentiment",
-  "title": "Sentiment",
-  "description": "Implementation of the Sentiment TTRPG system for Foundry VTT.",
-  "version": "0.2.0",
+  "id": "heartcore",
+  "title": "Heartcore",
+  "description": "Implementation of the Heartcore homebrew of the Sentiment TTRPG system for Foundry VTT.",
+  "version": "0.1.0",
   "compatibility": {
-    "minimum": "11",
+    "minimum": "12",
     "verified": "12.331"
   },
-  "url": "https://github.com/tomlaflin/sentiment",
-  "manifest": "https://raw.githubusercontent.com/tomlaflin/sentiment/main/system.json",
+  "url": "https://github.com/Zellenon/heartcore",
+  "manifest": "https://raw.githubusercontent.com/Zellenon/heartcore/refs/heads/main/system.json",
   "download": "https://github.com/tomlaflin/sentiment/archive/refs/tags/v0.2.0.zip",
   "license": "LICENSE.txt",
   "authors": [
+    {
+      "name": "Zellenon",
+      "email": "zellenon@gmail.com",
+      "url": "https://github.com/zellenon"
+    },
     {
       "name": "Tom Laflin",
       "email": "tom.laflin@gmail.com",
       "url": "https://github.com/tomlaflin"
     }
   ],
-  "esmodules": [ "sentiment.mjs" ],
-  "styles": [ "styles/sentiment.css" ],
-  "gridDistance": 5,
-  "gridUnits": "ft"
+  "esmodules": ["heartcore.mjs"],
+  "styles": ["styles/heartcore.css"],
+  "gridDistance": 1,
+  "gridUnits": "m"
 }

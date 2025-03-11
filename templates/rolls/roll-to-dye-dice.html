@@ -1,4 +1,4 @@
-<div class="sentiment">
+<div class="heartcore">
     <h3>{{title}}!</h3>
     <div class="dice-roll">
         <div class="dice-result">
@@ -7,21 +7,28 @@
                 <ol class="dice-rolls">
                     {{#if (isStatusNormal attributeDie.attribute)}}
                     <li class="roll die d6">{{attributeDie.roll}}</li>
-                    <li class="roll die attribute-modifier-die" style="background-color:{{attributeBackgroundColor attributeDie.attribute}}">+{{attributeDie.attribute.system.modifier}}</li>
-                    {{#if attributeDie.existing}} <li class="existing-swing-text">(Existing Swing)</li>{{/if}}
-                    {{/if}}
-                    {{#if (isStatusLockedOut attributeDie.attribute)}}
+                    <li class="roll die attribute-modifier-die"
+                        style="background-color:{{attributeBackgroundColor attributeDie.attribute}}">
+                        +{{attributeDie.attribute.system.modifier}}
+                    </li>
+                    {{#if attributeDie.existing}}
+                    <li class="existing-swing-text">(Existing Swing)</li>
+                    {{/if}} {{/if}} {{#if (isStatusLockedOut attributeDie.attribute)}}
                     <li class="roll die d6">-</li>
-                    <li class="roll die attribute-modifier-die" style="background-color:{{attributeBackgroundColor attributeDie.attribute}}">L</li>
-                    {{/if}}
-                    {{#if (isStatusWounded attributeDie.attribute)}}
+                    <li class="roll die attribute-modifier-die"
+                        style="background-color:{{attributeBackgroundColor attributeDie.attribute}}">
+                        L
+                    </li>
+                    {{/if}} {{#if (isStatusWounded attributeDie.attribute)}}
                     <li class="roll die d6">-</li>
-                    <li class="roll die attribute-modifier-die" style="background-color:{{attributeBackgroundColor attributeDie.attribute}}">W</li>
+                    <li class="roll die attribute-modifier-die"
+                        style="background-color:{{attributeBackgroundColor attributeDie.attribute}}">
+                        W
+                    </li>
                     {{/if}}
                 </ol>
             </div>
-            {{/each}}
-            {{#if additionalDice}}
+            {{/each}} {{#if additionalDice}}
             <div class="dice-formula">Bonus: {{additionalDice.formula}}</div>
             <div class="dice-tooltip">
                 {{#each additionalDice.dice}}

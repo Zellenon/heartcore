@@ -8,8 +8,8 @@ export class GiftData extends foundry.abstract.DataModel {
             description: new foundry.data.fields.HTMLField(),
             equipStatus: new foundry.data.fields.NumberField({
                 integer: true,
-                initial: GiftEquipStatusInitial
-            })
+                initial: GiftEquipStatusInitial,
+            }),
         };
     }
 }

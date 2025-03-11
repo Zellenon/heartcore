@@ -1,7 +1,4 @@
-import {
-    AttributeStatus,
-    RollTypes
-} from "../enums.mjs";
+import { AttributeStatus, RollTypes } from "../enums.mjs";
 
 export const AttributeIdNoSwing = "ATTRIBUTE_ID_NO_SWING";
 
@@ -12,16 +9,16 @@ export class CharacterData extends foundry.abstract.DataModel {
             health: new foundry.data.fields.SchemaField({
                 value: new foundry.data.fields.NumberField({
                     integer: true,
-                    initial: 10
+                    initial: 10,
                 }),
                 min: new foundry.data.fields.NumberField({
                     integer: true,
-                    initial: 0
+                    initial: 0,
                 }),
                 max: new foundry.data.fields.NumberField({
                     integer: true,
-                    initial: 10
-                })
+                    initial: 10,
+                }),
             }),
             speed: new foundry.data.fields.NumberField({
                 integer: true,
@@ -35,20 +32,20 @@ export class CharacterData extends foundry.abstract.DataModel {
             }),
             swing: new foundry.data.fields.SchemaField({
                 attributeId: new foundry.data.fields.StringField({
-                    initial: AttributeIdNoSwing
+                    initial: AttributeIdNoSwing,
                 }),
                 value: new foundry.data.fields.NumberField({
                     integer: true,
                     min: 0,
-                    initial: 0
-                })
+                    initial: 0,
+                }),
             }),
             swingTokenImages: new foundry.data.fields.SchemaField({
                 enabled: new foundry.data.fields.BooleanField({ initial: false }),
                 defaultTokenImagePath: new foundry.data.fields.StringField({
-                    initial: "icons/svg/mystery-man.svg"
-                })
-            })
+                    initial: "icons/svg/mystery-man.svg",
+                }),
+            }),
         };
     }
 }
@@ -57,39 +54,42 @@ export class CharacterData extends foundry.abstract.DataModel {
  * @extends {Actor}
  */
 export class Character extends Actor {
-
     static RegisterHandlebarsHelpers() {
-        Handlebars.registerHelper('attributeBackgroundColor', function (attribute) {
-            return attribute ? foundry.utils.Color.fromString(attribute.system.color).toRGBA(0.25) : "transparent";
+        Handlebars.registerHelper("attributeBackgroundColor", function(attribute) {
+            return attribute
+                ? foundry.utils.Color.fromString(attribute.system.color).toRGBA(0.25)
+                : "transparent";
         });
     }
 
     /**
-    * Returns an array of the character's attributes, culled from the set of all owned items.
-    */
+     * Returns an array of the character's attributes, culled from the set of all owned items.
+     */
     getAttributes() {
         return this.items.filter((item) => item.type === "attribute");
     }
 
     /**
-    * Returns the attribute associated with the character's current swing, or undefined if no matching attribute is found.
-    */
+     * Returns the attribute associated with the character's current swing, or undefined if no matching attribute is found.
+     */
     #getSwingAttribute() {
-        return this.items.find((item) => item._id === this.system.swing.attributeId);
+        return this.items.find(
+            (item) => item._id === this.system.swing.attributeId,
+        );
     }
 
     /**
-    * Perform a Roll to Do and display the result as a chat message.
-    * @param additionalDiceFormula
-    */
+     * Perform a Roll to Do and display the result as a chat message.
+     * @param additionalDiceFormula
+     */
     async rollToDo(additionalDiceFormula) {
         const swingAttribute = this.#getSwingAttribute();
         const swingValue = this.system.swing.value;
-        
+
         const d20Roll = await new Roll("1d20").evaluate();
         let rolls = [d20Roll];
 
-        const templatePath = "systems/sentiment/templates/rolls/roll-to-do.html";
+        const templatePath = "systems/heartcore/templates/rolls/roll-to-do.html";
         let templateValues = {
             d20Roll: d20Roll.total,
             toHit: d20Roll.total,
@@ -103,8 +103,7 @@ export class Character extends Actor {
             templateValues.swingValue = swingValue;
             templateValues.toHit += swingValue;
             templateValues.effect += swingValue;
-        }
-        else {
+        } else {
             const d6Roll = await new Roll("1d6").evaluate();
             rolls.push(d6Roll);
             templateValues.d6Roll = d6Roll.total;
@@ -112,9 +111,10 @@ export class Character extends Actor {
             templateValues.effect += d6Roll.total;
 
             let dialogCanceled = false;
-            const chosenAttribute = await this.#renderRollToDoChooseAttributeDialog().catch(() => {
-                dialogCanceled = true;
-            });
+            const chosenAttribute =
+                await this.#renderRollToDoChooseAttributeDialog().catch(() => {
+                    dialogCanceled = true;
+                });
 
             if (dialogCanceled) {
                 return;
@@ -128,23 +128,31 @@ export class Character extends Actor {
         }
 
         if (additionalDiceFormula?.toHit) {
-            const additionalRollToHit = await new Roll(additionalDiceFormula.toHit).evaluate();
+            const additionalRollToHit = await new Roll(
+                additionalDiceFormula.toHit,
+            ).evaluate();
             rolls.push(additionalRollToHit);
             templateValues.additionalDiceToHit = {
                 formula: additionalRollToHit.formula,
-                dice: additionalRollToHit.dice.map(diceTerm => diceTerm.getTooltipData())
-            }
+                dice: additionalRollToHit.dice.map((diceTerm) =>
+                    diceTerm.getTooltipData(),
+                ),
+            };
 
             templateValues.toHit += additionalRollToHit.total;
         }
 
         if (additionalDiceFormula?.toEffect) {
-            const additionalRollToEffect = await new Roll(additionalDiceFormula.toEffect).evaluate();
+            const additionalRollToEffect = await new Roll(
+                additionalDiceFormula.toEffect,
+            ).evaluate();
             rolls.push(additionalRollToEffect);
             templateValues.additionalDiceToEffect = {
                 formula: additionalRollToEffect.formula,
-                dice: additionalRollToEffect.dice.map(diceTerm => diceTerm.getTooltipData())
-            }
+                dice: additionalRollToEffect.dice.map((diceTerm) =>
+                    diceTerm.getTooltipData(),
+                ),
+            };
 
             templateValues.effect += additionalRollToEffect.total;
         }
@@ -153,34 +161,46 @@ export class Character extends Actor {
     }
 
     /**
-    * Render a dialog allowing the user to choose which attribute they wish to use for a Roll to Do.
-    * @private
-    */
+     * Render a dialog allowing the user to choose which attribute they wish to use for a Roll to Do.
+     * @private
+     */
     async #renderRollToDoChooseAttributeDialog() {
         const attributes = this.getAttributes();
-        const contentTemplatePath = "systems/sentiment/templates/rolls/roll-to-do-choose-attribute.html";
+        const contentTemplatePath =
+            "systems/heartcore/templates/rolls/roll-to-do-choose-attribute.html";
         const content = await renderTemplate(contentTemplatePath, {});
 
         return new Promise((resolve, reject) => {
             let buttons = {};
 
-            attributes.filter((attribute) => attribute.system.status == AttributeStatus.Normal).forEach((attribute) =>
-                buttons[attribute._id] = {
-                    label: attribute.name + " (+" + attribute.system.modifier + ")",
-                    callback: () => { resolve(attribute) }
-                }
-            );
+            attributes
+                .filter(
+                    (attribute) => attribute.system.status == AttributeStatus.Normal,
+                )
+                .forEach(
+                    (attribute) =>
+                    (buttons[attribute._id] = {
+                        label: attribute.name + " (+" + attribute.system.modifier + ")",
+                        callback: () => {
+                            resolve(attribute);
+                        },
+                    }),
+                );
 
             buttons.wild = {
                 label: "Wild",
-                callback: () => { resolve(null) }
-            }
+                callback: () => {
+                    resolve(null);
+                },
+            };
 
             const chooseAttributeDialog = {
                 title: "Roll To Do",
                 content: content,
                 buttons: buttons,
-                close: () => { reject() }
+                close: () => {
+                    reject();
+                },
             };
 
             new Dialog(chooseAttributeDialog).render(true);
@@ -188,22 +208,22 @@ export class Character extends Actor {
     }
 
     /**
-    * Render an HTML template with arguments as a chat message with this character as the speaker.
-    * @param templatePath
-    * @param args
-    * @param messageOptions
-    * @private
-    */
+     * Render an HTML template with arguments as a chat message with this character as the speaker.
+     * @param templatePath
+     * @param args
+     * @param messageOptions
+     * @private
+     */
     async #renderToChatMessage(templatePath, args, messageOptions = {}) {
         const html = await renderTemplate(templatePath, args);
         let message = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({ actor: this }),
-            content: html
+            content: html,
         };
 
         message = foundry.utils.mergeObject(message, messageOptions);
-        ChatMessage.applyRollMode(message, game.settings.get('core', 'rollMode'));
+        ChatMessage.applyRollMode(message, game.settings.get("core", "rollMode"));
 
         return ChatMessage.create(message);
     }
@@ -219,106 +239,150 @@ export class Character extends Actor {
         const messageOptions = {
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
-            rolls
-        }
+            rolls,
+        };
 
         return this.#renderToChatMessage(templatePath, args, messageOptions);
     }
 
     /**
-    * Perform a Roll to Dye and display the result as a chat message.
-    * @param additionalDiceFormula
-    */
+     * Perform a Roll to Dye and display the result as a chat message.
+     * @param additionalDiceFormula
+     */
     async rollToDye(additionalDiceFormula) {
         const rollToDyeOptions = {
             rollTitle: "Roll to Dye",
             totalStrategy: this.#totalAllAttributeRollsAndOnlySwingModifier,
-        }
+        };
 
         this.#rollToDyeImpl(rollToDyeOptions, additionalDiceFormula);
     }
 
     /**
-    * Perform a Recovery Roll and display the result as a chat message.
-    * @param additionalDiceFormula
-    */
+     * Perform a Recovery Roll and display the result as a chat message.
+     * @param additionalDiceFormula
+     */
     async recoveryRoll(additionalDiceFormula) {
         const rollToDyeOptions = {
             rollTitle: "Recovery Roll",
             totalStrategy: this.#totalAllAttributeRollsAndModifiers,
-        }
-        const rollToDyeTotal = await this.#rollToDyeImpl(rollToDyeOptions, additionalDiceFormula);
-        const newHealth = Math.min(this.system.health.value + rollToDyeTotal, this.system.health.max);
+        };
+        const rollToDyeTotal = await this.#rollToDyeImpl(
+            rollToDyeOptions,
+            additionalDiceFormula,
+        );
+        const newHealth = Math.min(
+            this.system.health.value + rollToDyeTotal,
+            this.system.health.max,
+        );
 
         return this.update({
-            "system.health.value": newHealth
+            "system.health.value": newHealth,
         });
     }
 
     /**
-    * Total attribute dice, but only add the modifier of the swing die.
-    * @param attributeDice
-    * @param swingAttributeDie
-    * @private
-    */
-    #totalAllAttributeRollsAndOnlySwingModifier(attributeDice, swingAttributeDie) {
-        let total = attributeDice.reduce((total, attributeDie) => total + attributeDie.roll, 0);
+     * Total attribute dice, but only add the modifier of the swing die.
+     * @param attributeDice
+     * @param swingAttributeDie
+     * @private
+     */
+    #totalAllAttributeRollsAndOnlySwingModifier(
+        attributeDice,
+        swingAttributeDie,
+    ) {
+        let total = attributeDice.reduce(
+            (total, attributeDie) => total + attributeDie.roll,
+            0,
+        );
         total += swingAttributeDie?.attribute.system.modifier ?? 0;
         return total;
     }
 
     /**
-    * Total attribute dice including the modifier of each die. The swing die is not treated specially.
-    * @param attributeDice
-    * @param swingAttributeDie
-    * @private
-    */
+     * Total attribute dice including the modifier of each die. The swing die is not treated specially.
+     * @param attributeDice
+     * @param swingAttributeDie
+     * @private
+     */
     #totalAllAttributeRollsAndModifiers(attributeDice, swingAttributeDie) {
-        return attributeDice.reduce((total, attributeDie) => total + attributeDie.roll + attributeDie.attribute.system.modifier, 0);
+        return attributeDice.reduce(
+            (total, attributeDie) =>
+                total + attributeDie.roll + attributeDie.attribute.system.modifier,
+            0,
+        );
     }
 
     /**
-    * Common implementation of Roll to Dye. Scenario-specific parameters are injected via an options object.
-    * @param options
-    * @param additionalDiceFormula
-    * @private
-    */
+     * Common implementation of Roll to Dye. Scenario-specific parameters are injected via an options object.
+     * @param options
+     * @param additionalDiceFormula
+     * @private
+     */
     async #rollToDyeImpl(options, additionalDiceFormula) {
         const swingAttribute = this.#getSwingAttribute();
         const swingValue = this.system.swing.value;
-        const existingSwingAttributeDie = swingAttribute ? {
-            attribute: swingAttribute,
-            roll: swingValue - swingAttribute.system.modifier,
-            existing: true
-        } : null;
+        const existingSwingAttributeDie = swingAttribute
+            ? {
+                attribute: swingAttribute,
+                roll: swingValue - swingAttribute.system.modifier,
+                existing: true,
+            }
+            : null;
 
-        const attributeDice = await this.#rollAttributeDice(existingSwingAttributeDie);
-        const additionalDice = additionalDiceFormula?.toEffect ? await new Roll(additionalDiceFormula.toEffect).evaluate() : null;
-        await this.#renderAttributeDice(options.rollTitle, attributeDice, additionalDice);
+        const attributeDice = await this.#rollAttributeDice(
+            existingSwingAttributeDie,
+        );
+        const additionalDice = additionalDiceFormula?.toEffect
+            ? await new Roll(additionalDiceFormula.toEffect).evaluate()
+            : null;
+        await this.#renderAttributeDice(
+            options.rollTitle,
+            attributeDice,
+            additionalDice,
+        );
 
-        const availableAttributeDice = attributeDice.filter((attributeDie) => attributeDie.attribute.system.status == AttributeStatus.Normal);
+        const availableAttributeDice = attributeDice.filter(
+            (attributeDie) =>
+                attributeDie.attribute.system.status == AttributeStatus.Normal,
+        );
         this.#releaseAttributesFromLockout();
 
-        const chosenAttributeDie = availableAttributeDice.length > 0 ? await this.#renderChooseSwingDialog(options.rollTitle, availableAttributeDice) : null;
+        const chosenAttributeDie =
+            availableAttributeDice.length > 0
+                ? await this.#renderChooseSwingDialog(
+                    options.rollTitle,
+                    availableAttributeDice,
+                )
+                : null;
         if (chosenAttributeDie != null) {
             this.update({
                 "system.swing.attributeId": chosenAttributeDie.attribute._id,
-                "system.swing.value": chosenAttributeDie.roll + chosenAttributeDie.attribute.system.modifier
+                "system.swing.value":
+                    chosenAttributeDie.roll +
+                    chosenAttributeDie.attribute.system.modifier,
             });
         }
-        
-        const newSwingAttributeDie = chosenAttributeDie ?? existingSwingAttributeDie;
-        const rollToDyeTotal = options.totalStrategy(availableAttributeDice, newSwingAttributeDie) + (additionalDice ? additionalDice.total : 0);
-        this.#renderRollToDyeResult(options.rollTitle, rollToDyeTotal, newSwingAttributeDie);
+
+        const newSwingAttributeDie =
+            chosenAttributeDie ?? existingSwingAttributeDie;
+        const rollToDyeTotal =
+            options.totalStrategy(availableAttributeDice, newSwingAttributeDie) +
+            (additionalDice ? additionalDice.total : 0);
+        this.#renderRollToDyeResult(
+            options.rollTitle,
+            rollToDyeTotal,
+            newSwingAttributeDie,
+        );
 
         return rollToDyeTotal;
     }
 
     /**
-    * Roll a d6 associated with each of the character's attributes. The character's existing swing attribute, if any, is retained at its current value.
-    * @param swingAttributeDie
-    * @private
-    */
+     * Roll a d6 associated with each of the character's attributes. The character's existing swing attribute, if any, is retained at its current value.
+     * @param swingAttributeDie
+     * @private
+     */
     async #rollAttributeDice(swingAttributeDie) {
         let attributeDice = [];
 
@@ -326,21 +390,19 @@ export class Character extends Actor {
         for (const attribute of attributes) {
             if (attribute._id == swingAttributeDie?.attribute._id) {
                 attributeDice.push(swingAttributeDie);
-            }
-            else if (attribute.system.status != AttributeStatus.Normal) {
+            } else if (attribute.system.status != AttributeStatus.Normal) {
                 attributeDice.push({
                     attribute: attribute,
                     roll: 0,
-                    existing: false
+                    existing: false,
                 });
-            }
-            else {
+            } else {
                 const d6Roll = await new Roll("1d6").evaluate();
                 attributeDice.push({
                     attribute: attribute,
                     roll: d6Roll.total,
                     rollObject: d6Roll,
-                    existing: false
+                    existing: false,
                 });
             }
         }
@@ -349,65 +411,78 @@ export class Character extends Actor {
     }
 
     /**
-    * Render a chat message announcing the character's rolls on their attribute dice.
-    * @param rollTitle
-    * @param attributeDice
-    * @param additionalDice
-    * @private
-    */
+     * Render a chat message announcing the character's rolls on their attribute dice.
+     * @param rollTitle
+     * @param attributeDice
+     * @param additionalDice
+     * @private
+     */
     async #renderAttributeDice(rollTitle, attributeDice, additionalDice) {
-        let rolls = attributeDice.filter((attributeDie) => attributeDie.rollObject).map((attributeDie) => attributeDie.rollObject);
+        let rolls = attributeDice
+            .filter((attributeDie) => attributeDie.rollObject)
+            .map((attributeDie) => attributeDie.rollObject);
 
         if (additionalDice) {
             rolls.push(additionalDice);
         }
 
-        const templatePath = "systems/sentiment/templates/rolls/roll-to-dye-dice.html";
+        const templatePath =
+            "systems/heartcore/templates/rolls/roll-to-dye-dice.html";
         const templateValues = {
             title: rollTitle,
             attributeDice: attributeDice,
-            additionalDice: additionalDice
+            additionalDice: additionalDice,
         };
 
         return this.#renderRollMessage(templatePath, templateValues, rolls);
     }
 
     /**
-    * Restore all locked-out attributes to normal status.
-    * @private
-    */
+     * Restore all locked-out attributes to normal status.
+     * @private
+     */
     #releaseAttributesFromLockout() {
-        this.getAttributes().filter((attribute) => attribute.system.status === AttributeStatus.LockedOut).forEach((lockedOutAttribute) =>
-            lockedOutAttribute.update({ "system.status": AttributeStatus.Normal })
-        );
+        this.getAttributes()
+            .filter(
+                (attribute) => attribute.system.status === AttributeStatus.LockedOut,
+            )
+            .forEach((lockedOutAttribute) =>
+                lockedOutAttribute.update({ "system.status": AttributeStatus.Normal }),
+            );
     }
 
     /**
-    * Render a dialog allowing the user to choose a new swing for the character based on the results of their Roll to Dye.
-    * @param dialogTitle
-    * @param attributeDice
-    * @private
-    */
+     * Render a dialog allowing the user to choose a new swing for the character based on the results of their Roll to Dye.
+     * @param dialogTitle
+     * @param attributeDice
+     * @private
+     */
     async #renderChooseSwingDialog(dialogTitle, attributeDice) {
-        const contentTemplatePath = "systems/sentiment/templates/rolls/roll-to-dye-choose-swing.html";
+        const contentTemplatePath =
+            "systems/heartcore/templates/rolls/roll-to-dye-choose-swing.html";
         const content = await renderTemplate(contentTemplatePath, {});
 
         return new Promise((resolve, reject) => {
             let buttons = {};
 
             for (let attributeDie of attributeDice) {
-                const swingValue = attributeDie.roll + attributeDie.attribute.system.modifier;
+                const swingValue =
+                    attributeDie.roll + attributeDie.attribute.system.modifier;
                 buttons[attributeDie.attribute._id] = {
                     label: attributeDie.attribute.name + ": " + swingValue,
-                    callback: () => { resolve(attributeDie) }
-                }
+                    callback: () => {
+                        resolve(attributeDie);
+                    },
+                };
             }
 
             const chooseSwingDialog = {
                 title: dialogTitle,
                 content: content,
                 buttons: buttons,
-                close: () => { resolve(null) }
+                close: () => {
+                    resolve(null);
+                },
             };
 
             new Dialog(chooseSwingDialog).render(true);
@@ -415,42 +490,44 @@ export class Character extends Actor {
     }
 
     /**
-    * Render a chat message announcing the final result of the character's Roll to Dye including their chosen swing, if any.
-    * @param rollTitle
-    * @param total
-    * @param swingAttributeDie
-    * @private
-    */
+     * Render a chat message announcing the final result of the character's Roll to Dye including their chosen swing, if any.
+     * @param rollTitle
+     * @param total
+     * @param swingAttributeDie
+     * @private
+     */
     async #renderRollToDyeResult(rollTitle, total, swingAttributeDie) {
-        const templatePath = "systems/sentiment/templates/rolls/roll-to-dye-result.html";
+        const templatePath =
+            "systems/heartcore/templates/rolls/roll-to-dye-result.html";
         let templateValues = {
             title: rollTitle,
-            total: total
+            total: total,
         };
 
         if (swingAttributeDie !== null) {
             templateValues.swingAttribute = swingAttributeDie.attribute;
-            templateValues.swingValue = swingAttributeDie.roll + swingAttributeDie.attribute.system.modifier;
+            templateValues.swingValue =
+                swingAttributeDie.roll + swingAttributeDie.attribute.system.modifier;
         }
 
         return this.#renderToChatMessage(templatePath, templateValues);
     }
 
     /**
-    * Set the charater's swing to the specified attribute and value.
-    * @param attributeId
-    * @param value
-    */
+     * Set the charater's swing to the specified attribute and value.
+     * @param attributeId
+     * @param value
+     */
     setSwing(attributeId, value) {
         this.update({
             "system.swing.attributeId": attributeId,
-            "system.swing.value": value
+            "system.swing.value": value,
         });
     }
 
     /**
-    * Drop the character's swing, if any.
-    */
+     * Drop the character's swing, if any.
+     */
     async dropSwing() {
         if (this.system.swing.attributeId === AttributeIdNoSwing) {
             return;
@@ -458,47 +535,54 @@ export class Character extends Actor {
 
         this.update({
             "system.swing.attributeId": AttributeIdNoSwing,
-            "system.swing.value": 0
+            "system.swing.value": 0,
         });
 
-        const templatePath = "systems/sentiment/templates/rolls/drop-swing.html";
+        const templatePath = "systems/heartcore/templates/rolls/drop-swing.html";
         return this.#renderToChatMessage(templatePath, {});
     }
 
     /**
-    * Set the status of the specified attribute.
-    * @param attributeId
-    * @param status
-    */
+     * Set the status of the specified attribute.
+     * @param attributeId
+     * @param status
+     */
     setAttributeStatus(attributeId, status) {
         const attribute = this.items.find((item) => item._id === attributeId);
         attribute.update({ "system.status": status });
 
-        if (attributeId === this.system.swing.attributeId && status !== AttributeStatus.Normal) {
+        if (
+            attributeId === this.system.swing.attributeId &&
+            status !== AttributeStatus.Normal
+        ) {
             this.dropSwing();
         }
     }
 
     /**
-    * Executes the specified custom roll.
-    * @param customRollId
-    */
+     * Executes the specified custom roll.
+     * @param customRollId
+     */
     async executeCustomRoll(customRollId) {
         const customRoll = this.items.find((item) => item._id === customRollId);
         if (!customRoll) {
-            throw new Error("Custom Roll with ID " + customRollId + " not found on Character with ID " + this._id);
+            throw new Error(
+                "Custom Roll with ID " +
+                customRollId +
+                " not found on Character with ID " +
+                this._id,
+            );
         }
 
         const rollFunction = RollTypes[customRoll.system.rollType].FunctionName;
         return this[rollFunction]({
             toHit: customRoll.system.formulaAddedToHit,
-            toEffect: customRoll.system.formulaAddedToEffect
+            toEffect: customRoll.system.formulaAddedToEffect,
         });
     }
 
     /** @inheritdoc */
     _onUpdate(changed, options, userId) {
-
         if (this.isOwner) {
             const newSwingAttributeId = changed.system?.swing?.attributeId;
             const newSwingValue = changed.system?.swing?.value;
@@ -516,14 +600,17 @@ export class Character extends Actor {
     }
 
     #clampSwingValue(newSwingAttributeId, newSwingValue) {
-        const swingAttributeId = newSwingAttributeId ?? this.system.swing.attributeId;
+        const swingAttributeId =
+            newSwingAttributeId ?? this.system.swing.attributeId;
         const swingValue = newSwingValue ?? this.system.swing.value;
 
         if (swingAttributeId === AttributeIdNoSwing) {
             return;
         }
 
-        const swingAttribute = this.items.find((item) => item._id === swingAttributeId);
+        const swingAttribute = this.items.find(
+            (item) => item._id === swingAttributeId,
+        );
         const swingMin = swingAttribute.system.modifier + 1;
         const swingMax = swingAttribute.system.modifier + 6;
 
@@ -536,20 +623,25 @@ export class Character extends Actor {
     }
 
     #updateTokenImages(newSwingAttributeId) {
-        const customTokenImagePath = newSwingAttributeId != AttributeIdNoSwing
-            ? this.items.find((item) => item._id === newSwingAttributeId).system.customTokenImagePath
-            : this.system.swingTokenImages.defaultTokenImagePath;
+        const customTokenImagePath =
+            newSwingAttributeId != AttributeIdNoSwing
+                ? this.items.find((item) => item._id === newSwingAttributeId).system
+                    .customTokenImagePath
+                : this.system.swingTokenImages.defaultTokenImagePath;
 
         const targetTokens = [];
 
         if (this.isToken) {
             targetTokens.push(this.token);
-        }
-        else {
+        } else {
             targetTokens.push(this.prototypeToken);
-            this.getDependentTokens().filter((token) => token.actorLink).forEach((token) => targetTokens.push(token));
+            this.getDependentTokens()
+                .filter((token) => token.actorLink)
+                .forEach((token) => targetTokens.push(token));
         }
 
-        targetTokens.forEach((token) => token.update({ "texture.src": customTokenImagePath }));
+        targetTokens.forEach((token) =>
+            token.update({ "texture.src": customTokenImagePath }),
+        );
     }
 }

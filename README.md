@@ -1,2 +1,3 @@
-# sentiment
-Implementation of the Sentiment TTRPG system for Foundry VTT.
+# Heartcore
+
+Implementation of the Heartcore Homebrew of the Sentiment TTRPG by the Stabbyness crew for Foundry VTT.

@@ -1,10 +1,9 @@
 export default class AttributeSheet extends ItemSheet {
-
     /** @inheritdoc */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ["sentiment", "sheet", "attribute"],
-            template: "systems/sentiment/templates/attribute-sheet.html"
+            classes: ["heartcore", "sheet", "attribute"],
+            template: "systems/heartcore/templates/attribute-sheet.html",
         });
     }
 

@@ -35,7 +35,8 @@
 
     <section class="sheet-body">
         <div class="tab description" data-group="primary" data-tab="description">
-            {{editor descriptionHTML target="system.description" button=true owner=owner editable=editable engine="prosemirror"}}
+            {{editor descriptionHTML target="system.description" button=true owner=owner editable=editable
+            engine="prosemirror"}}
         </div>
 
         <div class="tab attributes" data-group="primary" data-tab="attributes">
@@ -45,7 +46,7 @@
                 <span class="attribute-modifier-column">Modifier</span>
                 <span class="attribute-status-column">Status</span>
                 <span class="attribute-status-controls-column">Controls</span>
-                <span class="attribute-controls-column"/>
+                <span class="attribute-controls-column" />
             </header>
             <ol class="list attribute-list">
                 {{#each attributes as |attribute index|}}
@@ -56,51 +57,65 @@
                         ({{attribute.system.descriptiveName}})
                         {{/if}}
                     </p>
-                    <p class="attribute-color attribute-color-column" style="background-color:{{attribute.system.color}}" />
+                    <p class="attribute-color attribute-color-column"
+                        style="background-color:{{attribute.system.color}}" />
                     <p class="attribute-modifier-text attribute-modifier-column">+{{attribute.system.modifier}}</p>
                     <p class="attribute-status attribute-status-column">{{attribute.statusString}}</p>
                     <div class="attribute-status-controls attribute-status-controls-column">
-                        {{#if attribute.showRestoreButton}}<button class="button attribute-restore" type="button" title="Restore">Restore</button>{{/if}}
-                        {{#if attribute.showLockOutButton}}<button class="button attribute-lock-out" type="button" title="Lock Out">Lock Out</button>{{/if}}
-                        {{#if attribute.showWoundButton}}<button class="button attribute-wound" type="button" title="Wound">Wound</button>{{/if}}
+                        {{#if attribute.showRestoreButton}}<button class="button attribute-restore" type="button"
+                            title="Restore">Restore</button>{{/if}}
+                        {{#if attribute.showLockOutButton}}<button class="button attribute-lock-out" type="button"
+                            title="Lock Out">Lock Out</button>{{/if}}
+                        {{#if attribute.showWoundButton}}<button class="button attribute-wound" type="button"
+                            title="Wound">Wound</button>{{/if}}
                     </div>
                     <div class="attribute-controls attribute-controls-column">
-                        <a class="attribute-control attribute-open" title="Open Attribute"> <i class="fas fa-edit"></i> Open</a>
-                        <a class="attribute-control attribute-delete" title="Delete Attribute"> <i class="fas fa-trash"></i> Delete</a>
+                        <a class="attribute-control attribute-open" title="Open Attribute"> <i class="fas fa-edit"></i>
+                            Open</a>
+                        <a class="attribute-control attribute-delete" title="Delete Attribute"> <i
+                                class="fas fa-trash"></i> Delete</a>
                     </div>
                 </li>
                 {{/each}}
             </ol>
             <p>
-                <a class="attribute-control attribute-add" title="Add New Attribute"><i class="fas fa-plus"></i> Add New Attribute</a>
+                <a class="attribute-control attribute-add" title="Add New Attribute"><i class="fas fa-plus"></i> Add New
+                    Attribute</a>
             </p>
-            <hr class="solid"></hr>
+            <hr class="solid">
+            </hr>
             <p><label>Swing:</label></p>
             <p class="flexrow">
                 <select class="swing-attribute-selector" name="system.swing.attributeId">
                     {{selectOptions swingAttributeOptions selected=data.system.swing.attributeId}}
                 </select>
                 {{#if showSwingValueInput}}
-                <input type="number" class="swing-value" name="system.swing.value" value="{{data.system.swing.value}}" min="0" data-dtype="Number" />
+                <input type="number" class="swing-value" name="system.swing.value" value="{{data.system.swing.value}}"
+                    min="0" data-dtype="Number" />
                 {{/if}}
             </p>
             <p><button class="button drop-swing" type="button" title="Drop Swing">Drop Swing</button></p>
             <p>
-                <input type="checkbox" class="enable-swing-token-images" id="enable-swing-token-images" name="system.swingTokenImages.enabled" {{checked data.system.swingTokenImages.enabled}} />
+                <input type="checkbox" class="enable-swing-token-images" id="enable-swing-token-images"
+                    name="system.swingTokenImages.enabled" {{checked data.system.swingTokenImages.enabled}} />
                 <label for="enable-swing-token-images">Use Custom Token Images Per Swing</label>
                 {{#if data.system.swingTokenImages.enabled}}
             <p>
                 <label class="custom-token-image-label" for="custom-token-image">Default Token (No Swing):</label>
                 <br />
-                <img class="custom-token-image" src="{{data.system.swingTokenImages.defaultTokenImagePath}}" data-edit="system.swingTokenImages.defaultTokenImagePath" height="100" width="100" />
+                <img class="custom-token-image" src="{{data.system.swingTokenImages.defaultTokenImagePath}}"
+                    data-edit="system.swingTokenImages.defaultTokenImagePath" height="100" width="100" />
             </p>
             {{/if}}
             </p>
         </div>
         <div class="tab gifts" data-group="primary" data-tab="gifts">
-            {{> "systems/sentiment/templates/partials/gift-list.html" title="Primary" equipStatus=GiftEquipStatus.Primary gifts=primaryGifts}}
-            {{> "systems/sentiment/templates/partials/gift-list.html" title="Equipped" equipStatus=GiftEquipStatus.Equipped gifts=equippedGifts}}
-            {{> "systems/sentiment/templates/partials/gift-list.html" title="Unequipped" equipStatus=GiftEquipStatus.Unequipped gifts=unequippedGifts}}
+            {{> "systems/heartcore/templates/partials/gift-list.html" title="Primary"
+            equipStatus=GiftEquipStatus.Primary gifts=primaryGifts}}
+            {{> "systems/heartcore/templates/partials/gift-list.html" title="Equipped"
+            equipStatus=GiftEquipStatus.Equipped gifts=equippedGifts}}
+            {{> "systems/heartcore/templates/partials/gift-list.html" title="Unequipped"
+            equipStatus=GiftEquipStatus.Unequipped gifts=unequippedGifts}}
             <p>
                 <a class="gift-control gift-add" title="Add New Gift"><i class="fas fa-plus"></i> Add New Gift</a>
             </p>
@@ -115,12 +130,14 @@
                 <span class="custom-roll-type-column">Roll Type</span>
                 <span class="custom-roll-to-hit-column">To Hit</span>
                 <span class="custom-roll-to-effect-column">To Effect</span>
-                <span class="custom-roll-controls-column"/>
+                <span class="custom-roll-controls-column" />
             </header>
             <ol class="list custom-rolls-list">
                 {{#each customRolls as |customRoll index|}}
-                <li class="custom-roll list-item flexrow" data-item-id="{{customRoll._id}}" data-custom-roll="{{toJSON customRoll}}">
-                    <a class="custom-roll-label-column custom-roll-control custom-roll-execute" title="{{customRoll.name}}"> <i class="fas fa-dice-d20"></i> {{customRoll.name}}</a>
+                <li class="custom-roll list-item flexrow" data-item-id="{{customRoll._id}}"
+                    data-custom-roll="{{toJSON customRoll}}">
+                    <a class="custom-roll-label-column custom-roll-control custom-roll-execute"
+                        title="{{customRoll.name}}"> <i class="fas fa-dice-d20"></i> {{customRoll.name}}</a>
                     {{#with customRoll.system.rollType as |rollType|}}
                     {{#with (lookup ../../RollTypes rollType)}}
                     <h4 class="custom-roll-type-column"> {{DisplayName}} </h4>
@@ -133,14 +150,17 @@
                     </h4>
                     <h4 class="custom-roll-to-effect-column"> {{customRoll.system.formulaAddedToEffect}} </h4>
                     <div class="custom-roll-controls-column custom-roll-controls">
-                        <a class="custom-roll-control custom-roll-open" title="Open"> <i class="fas fa-edit"></i> Open</a>
-                        <a class="custom-roll-control custom-roll-delete" title="Delete"> <i class="fas fa-trash"></i> Delete</a>
+                        <a class="custom-roll-control custom-roll-open" title="Open"> <i class="fas fa-edit"></i>
+                            Open</a>
+                        <a class="custom-roll-control custom-roll-delete" title="Delete"> <i class="fas fa-trash"></i>
+                            Delete</a>
                     </div>
                 </li>
                 {{/each}}
             </ol>
             <p>
-                <a class="custom-roll-control custom-roll-add" title="New Custom Roll"><i class="fas fa-plus"></i>New Custom Roll</a>
+                <a class="custom-roll-control custom-roll-add" title="New Custom Roll"><i class="fas fa-plus"></i>New
+                    Custom Roll</a>
             </p>
         </div>
     </section>
