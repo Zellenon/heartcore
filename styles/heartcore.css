@@ -1,96 +1,97 @@
 .heartcore .window-content {
-    height: 100%;
-    padding: 5px;
-    overflow-y: hidden;
+  height: 100%;
+  padding: 5px;
+  overflow-y: hidden;
 }
 
 .heartcore form {
-    height: 100%;
+  height: 100%;
 }
 
 .heartcore .sheet-header {
-    overflow: hidden;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    margin-bottom: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 10px;
 }
 
 .heartcore.sheet.character .sheet-header {
-    flex: 0 0 100px;
+  flex: 0 0 110px;
 }
 
 .heartcore.sheet.attribute .sheet-header,
 .heartcore.sheet.gift .sheet-header,
 .heartcore.sheet.custom-roll .sheet-header {
-    flex: 0 0 64px;
+  flex: 0 0 64px;
 }
 
 .heartcore .sheet-header .character-image {
-    flex: 0 0 100px;
-    height: 100px;
-    margin-right: 10px;
+  flex: 0 0 100px;
+  height: 100px;
+  margin-right: 10px;
 }
 
 .heartcore .sheet-header .attribute-image,
 .heartcore .sheet-header .gift-image {
-    flex: 0 0 64px;
-    height: 64px;
-    margin-right: 10px;
+  flex: 0 0 64px;
+  height: 64px;
+  margin-right: 10px;
 }
 
 .heartcore .sheet-header .header-fields {
-    flex: 1;
+  flex: 1;
+  padding: 8px;
 }
 
 .heartcore .sheet-header .character-name-header {
-    padding: 0px;
-    border-bottom: 0;
+  padding: 0px;
+  border-bottom: 0;
 }
 
 .heartcore .sheet-header .character-name-header .character-name {
-    width: 100%;
-    height: 100%;
-    margin: 0 0 5px 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 0 5px 0;
 }
 
 .heartcore .sheet-header .attribute-name,
 .heartcore .sheet-header .gift-name {
-    width: 100%;
-    height: 100%;
-    margin: 0px;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
 }
 
 .heartcore .header-row {
-    display: flex;
+  display: flex;
 }
 
 .heartcore .sheet-header .header-fields .header-field-stack {
-    display: block;
-    height: 40px;
-    align-items: center;
-    text-align: center;
+  display: block;
+  height: 40px;
+  align-items: center;
+  text-align: center;
 }
 
 .heartcore .sheet-header .header-fields .health-stack {
-    width: 50%;
+  width: 50%;
 }
 
 .heartcore .sheet-header .header-fields .speed-stack,
 .heartcore .sheet-header .header-fields .experience-stack {
-    width: 25%;
+  width: 25%;
 }
 
 .heartcore .health-bar,
 .heartcore .roll-to-do-results {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .heartcore .health-bar .input {
-    width: 100px;
-    height: 28px;
+  width: 100px;
+  height: 28px;
 }
 
 .heartcore .sheet-body,
@@ -99,170 +100,177 @@
 .heartcore .sheet-body .description,
 .heartcore .editor,
 .heartcore .editor-content {
-    height: 100%;
+  height: 100%;
 }
 
 .heartcore .sheet-body {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .heartcore .tabs {
-    flex: 0 0 32px;
+  flex: 0 0 32px;
 }
 
 .heartcore .tabs .item.active {
-    font-weight: bold;
-    text-shadow: none;
+  font-weight: bold;
+  text-shadow: none;
 }
 
 .heartcore .sheet-body .tab {
-    height: 100%;
-    overflow-y: auto;
+  height: 100%;
+  overflow-y: auto;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .heartcore button {
-    margin: 0px;
+  margin: 0px;
 }
 
 .heartcore .list {
-    list-style: none;
-    margin: 7px 0;
-    padding: 0;
-    overflow-y: auto;
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto;
 }
 
 .heartcore .list .list-item {
-    min-height: 30px;
-    line-height: 24px;
-    padding: 3px 0;
-    border-bottom: 1px solid #bbb;
-    align-items: stretch;
+  min-height: 30px;
+  line-height: 24px;
+  padding: 3px 0;
+  border-bottom: 1px solid #bbb;
+  align-items: stretch;
 }
 
 .heartcore .list .list-item .list-image {
-    width: 24px;
-    height: 24px;
-    flex: 0 0 24px;
-    margin-right: 5px;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  margin-right: 5px;
 }
 
 .heartcore .attribute-name-column,
 .heartcore .attribute-controls-column {
-    flex-grow: 2;
+  flex-grow: 2;
+  align-items: center;
+  text-align: center;
 }
 
 .heartcore .attribute-color-column,
 .heartcore .attribute-modifier-column,
 .heartcore .attribute-status-column,
-.heartcore .attribute-status-controls-column {
-    flex-grow: 1;
+.heartcore .attribute-status-controls-row {
+  flex-grow: 1;
+  align-items: center;
+}
+
+.heartcore .rolls-row {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
 }
 
 .heartcore .custom-roll-label-column,
 .heartcore .custom-roll-controls-column {
-    flex-grow: 2;
+  flex-grow: 2;
 }
 
 .heartcore .custom-roll-type-column,
 .heartcore .custom-roll-to-hit-column,
 .heartcore .custom-roll-to-effect-column {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .heartcore .attribute-color {
-    border: 1px solid black;
-    border-radius: 5px;
-    margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 12px;
 }
 
 .heartcore .attribute-modifier-text {
-    font-size: var(--font-size-20);
-    font-weight: bold;
+  font-size: var(--font-size-20);
+  font-weight: bold;
 }
 
 .heartcore .custom-rolls-header,
 .heartcore .attributes-header {
-    position: sticky;
-    top: 0;
-    left: 0;
-    align-items: center;
-    padding: 0 5px;
-    margin: 5px 0;
-    background: #cfcdc2;
-    border: 1px solid #aaa;
-    border-radius: 2px;
-    text-align: left;
-    font-weight: bold;
+  position: sticky;
+  top: 0;
+  left: 0;
+  align-items: center;
+  padding: 0 5px;
+  margin: 5px 0;
+  background: #cfcdc2;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  text-align: left;
+  font-weight: bold;
 }
 
 .heartcore .dice-rolls {
-    list-style: none;
-    margin: 5px 0;
-    padding: 0;
-    overflow: hidden;
+  list-style: none;
+  margin: 5px 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 .heartcore .dice-rolls .roll,
 .heartcore .existing-swing-text {
-    min-width: 36px;
-    line-height: 36px;
-    margin-right: 5px;
-    background-size: 36px 36px;
-    font-size: var(--font-size-20);
+  min-width: 36px;
+  line-height: 36px;
+  margin-right: 5px;
+  background-size: 36px 36px;
+  font-size: var(--font-size-20);
 
-    position: relative;
-    float: left;
-    background-repeat: no-repeat;
-    color: #000;
-    font-weight: bold;
-    text-align: center;
+  position: relative;
+  float: left;
+  background-repeat: no-repeat;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
 }
 
 .heartcore .dice-rolls .d6 {
-    background-image: url(../../../icons/svg/d6-grey.svg);
+  background-image: url(../../../icons/svg/d6-grey.svg);
 }
 
 .heartcore .dice-rolls .d20 {
-    background-image: url(../../../icons/svg/d20-grey.svg);
+  background-image: url(../../../icons/svg/d20-grey.svg);
 }
 
 .heartcore .dice-rolls .max {
-    color: #18520b;
-    filter: sepia(0.5) hue-rotate(60deg);
+  color: #18520b;
+  filter: sepia(0.5) hue-rotate(60deg);
 }
 
 .heartcore .dice-rolls .min {
-    color: #aa0200;
-    filter: sepia(0.5) hue-rotate(-60deg);
+  color: #aa0200;
+  filter: sepia(0.5) hue-rotate(-60deg);
 }
 
 .heartcore .dice-rolls .attribute-modifier-die {
-    background: none;
-    margin: 2px 5px 2px 0;
+  background: none;
+  margin: 2px 5px 2px 0;
 }
 
 .heartcore .dice-rolls .attribute-modifier-die,
 .heartcore .swing {
-    border-radius: 16px;
-    min-width: 32px;
-    line-height: 32px;
+  border-radius: 16px;
+  min-width: 32px;
+  line-height: 32px;
 }
 
 .heartcore .chosen-swing-text {
-    margin: 5px 0;
-    color: #000;
-    font-size: var(--font-size-20);
-    font-weight: bold;
-    text-align: center;
-    line-height: 32px;
+  margin: 5px 0;
+  color: #000;
+  font-size: var(--font-size-20);
+  font-weight: bold;
+  text-align: center;
+  line-height: 32px;
 }
 
 .heartcore .swing {
-    display: inline-block;
-    position: relative;
-    background-repeat: no-repeat;
-}
-
-.heartcore .roll-to-do-results .roll-to-do-result {
-    flex: 50%;
+  display: inline-block;
+  position: relative;
+  background-repeat: no-repeat;
 }
