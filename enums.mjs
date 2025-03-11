@@ -33,3 +33,21 @@ export const AttributeStatusStrings = new Map([
   [AttributeStatus.LockedOut, "Locked Out"],
   [AttributeStatus.Wounded, "Wounded"],
 ]);
+
+export function rollRating(num) {
+  if (num <= 5) {
+    return "Pathetic";
+  } else if (num <= 10) {
+    return "Easy";
+  } else if (num <= 15) {
+    return "Normal";
+  } else if (num <= 20) {
+    return "Hard";
+  } else if (num <= 25) {
+    return "Very Hard";
+  } else if (num <= 30) {
+    return "Extreme";
+  } else {
+    return "Unrankable";
+  }
+}

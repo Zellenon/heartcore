@@ -1,4 +1,4 @@
-import { AttributeStatus, RollTypes } from "../enums.mjs";
+import { AttributeStatus, RollTypes, rollRating } from "../enums.mjs";
 
 export const AttributeIdNoSwing = "ATTRIBUTE_ID_NO_SWING";
 
@@ -96,6 +96,7 @@ export class Character extends Actor {
       effect: 0,
       critSuccess: d20Roll.total == 20,
       critFail: d20Roll.total == 1,
+      rating: "",
     };
 
     if (swingAttribute) {
@@ -156,6 +157,8 @@ export class Character extends Actor {
 
       templateValues.effect += additionalRollToEffect.total;
     }
+
+    templateValues.rating = rollRating(templateValues.toHit);
 
     return this.#renderRollMessage(templatePath, templateValues, rolls);
   }

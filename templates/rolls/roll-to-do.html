@@ -4,22 +4,28 @@
         <div class="dice-result">
             <div class="dice">
                 <ol class="dice-rolls">
-                    <li class="roll die d20 {{#if critSuccess}}max{{/if}} {{#if critFail}}min{{/if}}">{{d20Roll}}</li>
+                    <li class="roll die d20 {{#if critSuccess}}max{{/if}} {{#if critFail}}min{{/if}}">
+                        {{d20Roll}}
+                    </li>
                     {{#if d6Roll}}
                     <li class="roll die d6">{{d6Roll}}</li>
-                    {{/if}}
-                    {{#if attributeModifier}}
+                    {{/if}} {{#if attributeModifier}}
                     <li class="roll die attribute-modifier-die"
-                        style="background-color:{{attributeBackgroundColor attribute}}">{{attributeModifier}}</li>
-                    {{/if}}
-                    {{#if swingValue}}
+                        style="background-color:{{attributeBackgroundColor attribute}}">
+                        {{attributeModifier}}
+                    </li>
+                    {{/if}} {{#if swingValue}}
                     <li class="roll die attribute-modifier-die"
-                        style="background-color:{{attributeBackgroundColor attribute}}">{{swingValue}}</li>
+                        style="background-color:{{attributeBackgroundColor attribute}}">
+                        {{swingValue}}
+                    </li>
                     {{/if}}
                 </ol>
             </div>
             {{#if additionalDiceToHit}}
-            <div class="dice-formula">Bonus to Hit: {{additionalDiceToHit.formula}}</div>
+            <div class="dice-formula">
+                Bonus to Hit: {{additionalDiceToHit.formula}}
+            </div>
             <div class="dice-tooltip">
                 {{#each additionalDiceToHit.dice}}
                 <section class="tooltip-part">
@@ -37,9 +43,10 @@
                 </section>
                 {{/each}}
             </div>
-            {{/if}}
-            {{#if additionalDiceToEffect}}
-            <div class="dice-formula">Bonus to Effect: {{additionalDiceToEffect.formula}}</div>
+            {{/if}} {{#if additionalDiceToEffect}}
+            <div class="dice-formula">
+                Bonus to Effect: {{additionalDiceToEffect.formula}}
+            </div>
             <div class="dice-tooltip">
                 {{#each additionalDiceToEffect.dice}}
                 <section class="tooltip-part">
@@ -59,9 +66,13 @@
             </div>
             {{/if}}
             <div class="roll-to-do-results">
-                <h4 class="dice-total roll-to-do-result">To Hit: {{toHit}}</h4>
-                <h4 class="dice-total roll-to-do-result" {{#if attribute}}
-                    style="background-color:{{attributeBackgroundColor attribute}}" {{/if}}>Effect: {{effect}}</h4>
+                <h4 class="dice-total roll-to-do-result" style="flex: 2; font-size: 19px">
+                    To Hit: {{toHit}} ({{rating}})
+                </h4>
+                <h4 class="dice-total roll-to-do-result"
+                    style="flex:1;{{#if attribute}}background-color:{{attributeBackgroundColor attribute}} {{/if}}">
+                    Effect: {{effect}}
+                </h4>
             </div>
         </div>
     </div>
