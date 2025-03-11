@@ -20,6 +20,20 @@ export class CharacterData extends foundry.abstract.DataModel {
           initial: 10,
         }),
       }),
+      spirit: new foundry.data.fields.SchemaField({
+        value: new foundry.data.fields.NumberField({
+          integer: true,
+          initial: 0,
+        }),
+        min: new foundry.data.fields.NumberField({
+          integer: true,
+          initial: 0,
+        }),
+        max: new foundry.data.fields.NumberField({
+          integer: true,
+          initial: 3,
+        }),
+      }),
       speed: new foundry.data.fields.NumberField({
         integer: true,
         min: 0,
