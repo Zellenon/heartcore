@@ -1,4 +1,9 @@
-import { AttributeStatus, RollTypes, rollRating } from "../enums.mjs";
+import {
+    AttributeStatus,
+    CooldownType,
+    RollTypes,
+    rollRating,
+} from "../enums.mjs";
 
 export const AttributeIdNoSwing = "ATTRIBUTE_ID_NO_SWING";
 
@@ -103,7 +108,7 @@ export class Character extends Actor {
         const d20Roll = await new Roll("1d20").evaluate();
         let rolls = [d20Roll];
 
-        const templatePath = "systems/heartcore/templates/rolls/roll-to-do.html";
+        const templatePath = "systems/heartcore/templates/chat/roll-to-do.html";
         let templateValues = {
             d20Roll: d20Roll.total,
             toHit: d20Roll.total,
@@ -184,7 +189,7 @@ export class Character extends Actor {
     async #renderRollToDoChooseAttributeDialog() {
         const attributes = this.getAttributes();
         const contentTemplatePath =
-            "systems/heartcore/templates/rolls/roll-to-do-choose-attribute.html";
+            "systems/heartcore/templates/chat/roll-to-do-choose-attribute.html";
         const content = await renderTemplate(contentTemplatePath, {});
 
         return new Promise((resolve, reject) => {
@@ -444,7 +449,7 @@ export class Character extends Actor {
         }
 
         const templatePath =
-            "systems/heartcore/templates/rolls/roll-to-dye-dice.html";
+            "systems/heartcore/templates/chat/roll-to-dye-dice.html";
         const templateValues = {
             title: rollTitle,
             attributeDice: attributeDice,
@@ -476,7 +481,7 @@ export class Character extends Actor {
      */
     async #renderChooseSwingDialog(dialogTitle, attributeDice) {
         const contentTemplatePath =
-            "systems/heartcore/templates/rolls/roll-to-dye-choose-swing.html";
+            "systems/heartcore/templates/chat/roll-to-dye-choose-swing.html";
         const content = await renderTemplate(contentTemplatePath, {});
 
         return new Promise((resolve, reject) => {
@@ -515,7 +520,7 @@ export class Character extends Actor {
      */
     async #renderRollToDyeResult(rollTitle, total, swingAttributeDie) {
         const templatePath =
-            "systems/heartcore/templates/rolls/roll-to-dye-result.html";
+            "systems/heartcore/templates/chat/roll-to-dye-result.html";
         let templateValues = {
             title: rollTitle,
             total: total,
@@ -542,11 +547,15 @@ export class Character extends Actor {
         });
     }
 
+    isColorless() {
+        return this.system.swing.attributeId === AttributeIdNoSwing;
+    }
+
     /**
-     * Drop the character's swing, if any.
+     * Remove the character's swing, if any.
      */
-    async dropSwing() {
-        if (this.system.swing.attributeId === AttributeIdNoSwing) {
+    async removeSwing() {
+        if (this.isColorless()) {
             return;
         }
 
@@ -554,9 +563,69 @@ export class Character extends Actor {
             "system.swing.attributeId": AttributeIdNoSwing,
             "system.swing.value": 0,
         });
+    }
 
-        const templatePath = "systems/heartcore/templates/rolls/drop-swing.html";
-        return this.#renderToChatMessage(templatePath, {});
+    /**
+     * Drop the character's swing, if any, without further alteration.
+     */
+    async dropSwing() {
+        if (this.isColorless()) {
+            return;
+        }
+        this.removeSwing();
+
+        const templatePath = "systems/heartcore/templates/chat/drop-swing.html";
+        return this.#renderToChatMessage(templatePath, { name: this.name });
+    }
+
+    /**
+     * Ignites the character's swing, if any.
+     */
+    async ignite() {
+        if (this.isColorless()) {
+            return;
+        }
+
+        const attribute = this.items.find(
+            (item) => item._id === this.system.swing.attributeId,
+        );
+        attribute.update({
+            "system.status": AttributeStatus.LockedOut,
+            "system.cooldownType": CooldownType.Ignite,
+            "system.cooldown": 1,
+        });
+        this.removeSwing();
+
+        const templatePath = "systems/heartcore/templates/chat/ignite.html";
+        return this.#renderToChatMessage(templatePath, {
+            name: this.name,
+            color: attribute.name,
+        });
+    }
+
+    /**
+     * Exhausts the character's swing, if any.
+     */
+    async exhaust() {
+        if (!this.hasSwing()) {
+            return;
+        }
+
+        const attribute = this.items.find(
+            (item) => item._id === this.system.swing.attributeId,
+        );
+        attribute.update({
+            "system.status": AttributeStatus.LockedOut,
+            "system.cooldownType": CooldownType.Exhaust,
+            "system.cooldown": cooldown,
+        });
+        this.removeSwing();
+
+        const templatePath = "systems/heartcore/templates/chat/exhaust.html";
+        return this.#renderToChatMessage(templatePath, {
+            name: this.name,
+            color: attribute.name,
+        });
     }
 
     /**

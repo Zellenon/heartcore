@@ -212,11 +212,15 @@ export default class CharacterSheet extends ActorSheet {
             .find(".custom-roll-execute")
             .click(this.#onCustomRollExecute.bind(this));
         html.find(".drop-swing").click(this.#onDropSwing.bind(this));
+        html.find(".ignite").click(this.#onIgnite.bind(this));
+        html.find(".exhaust").click(this.#onExhaust.bind(this));
         html.find(".roll-to-do").click(this.#onRollToDo.bind(this));
         html.find(".roll-to-dye").click(this.#onRollToDye.bind(this));
         html.find(".recovery-roll").click(this.#onRecoveryRoll.bind(this));
 
         this.#setDragDataOnButton(html, ".drop-swing", "dropSwing");
+        this.#setDragDataOnButton(html, ".ignite", "ignite");
+        this.#setDragDataOnButton(html, ".exhaust", "exhaust");
         this.#setDragDataOnButton(html, ".roll-to-do", "rollToDo");
         this.#setDragDataOnButton(html, ".roll-to-dye", "rollToDye");
         this.#setDragDataOnButton(html, ".recovery-roll", "recoveryRoll");
@@ -613,5 +617,25 @@ export default class CharacterSheet extends ActorSheet {
     #onDropSwing(event) {
         event.preventDefault();
         this.object.dropSwing();
+    }
+
+    /**
+     * Handle event when the user drops the character's swing.
+     * @param event
+     * @private
+     */
+    #onIgnite(event) {
+        event.preventDefault();
+        this.object.ignite();
+    }
+
+    /**
+     * Handle event when the user drops the character's swing.
+     * @param event
+     * @private
+     */
+    #onExhaust(event) {
+        event.preventDefault();
+        this.object.exhaust();
     }
 }

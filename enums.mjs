@@ -5,6 +5,12 @@ export const AttributeStatus = Object.freeze({
   Wounded: 2,
 });
 
+export const CooldownType = Object.freeze({
+  None: 0,
+  Ignite: 1,
+  Exhaust: 2,
+});
+
 // Enum type for attribute states.
 export const GiftEquipStatus = Object.freeze({
   Unequipped: 0,
@@ -32,6 +38,12 @@ export const AttributeStatusStrings = new Map([
   [AttributeStatus.Normal, "Normal"],
   [AttributeStatus.LockedOut, "Locked Out"],
   [AttributeStatus.Wounded, "Wounded"],
+]);
+
+export const AttributeCooldownStrings = new Map([
+  [CooldownType.None, ""],
+  [CooldownType.Ignite, "Ignited"],
+  [CooldownType.Exhaust, "Exhausted"],
 ]);
 
 export function rollRating(num) {
