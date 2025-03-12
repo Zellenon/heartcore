@@ -368,7 +368,7 @@ export class Character extends Actor {
       (attributeDie) =>
         attributeDie.attribute.system.status == AttributeStatus.Normal,
     );
-    this.#releaseAttributesFromLockout();
+    this.#tickAttributeIgnitionCooldown();
 
     const chosenAttributeDie =
       availableAttributeDice.length > 0
@@ -474,6 +474,28 @@ export class Character extends Actor {
           "system.cooldownType": CooldownType.None,
         }),
       );
+  }
+
+  /**
+   * Restore all locked-out attributes to normal status.
+   * @private
+   */
+  #tickAttributeIgnitionCooldown() {
+    this.getAttributes()
+      .filter(
+        (attribute) => attribute.system.cooldownType === CooldownType.Ignite,
+      )
+      .forEach((ignitedAttribute) => {
+        let cooldown = ignitedAttribute.system.cooldown - 1;
+        console.log(cooldown);
+        ignitedAttribute.update({
+          "system.status":
+            cooldown == 0 ? AttributeStatus.Normal : AttributeStatus.LockedOut,
+          "system.cooldownType":
+            cooldown == 0 ? CooldownType.None : CooldownType.Ignite,
+          "system.cooldown": cooldown,
+        });
+      });
   }
 
   /**
