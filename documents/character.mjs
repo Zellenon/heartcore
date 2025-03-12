@@ -487,7 +487,6 @@ export class Character extends Actor {
       )
       .forEach((ignitedAttribute) => {
         let cooldown = ignitedAttribute.system.cooldown - 1;
-        console.log(cooldown);
         ignitedAttribute.update({
           "system.status":
             cooldown == 0 ? AttributeStatus.Normal : AttributeStatus.LockedOut,
