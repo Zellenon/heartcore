@@ -469,7 +469,10 @@ export class Character extends Actor {
         (attribute) => attribute.system.status === AttributeStatus.LockedOut,
       )
       .forEach((lockedOutAttribute) =>
-        lockedOutAttribute.update({ "system.status": AttributeStatus.Normal }),
+        lockedOutAttribute.update({
+          "system.status": AttributeStatus.Normal,
+          "system.cooldownType": CooldownType.None,
+        }),
       );
   }
 
@@ -642,6 +645,10 @@ export class Character extends Actor {
       status !== AttributeStatus.Normal
     ) {
       this.dropSwing();
+    }
+
+    if (status == AttributeStatus.Normal) {
+      attribute.update({ "system.cooldownType": CooldownType.None });
     }
   }
 
