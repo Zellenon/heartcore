@@ -71,6 +71,7 @@
 
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item" data-tab="attributes">Attributes</a>
+        <a class="item" data-tab="resources">Resources</a>
         <a class="item" data-tab="gifts">Gifts</a>
         <a class="item" data-tab="rolls">Rolls</a>
         <a class="item" data-tab="description">Description</a>
@@ -136,6 +137,37 @@
             </p>
             {{/if}}
             </p>
+        </div>
+        <div class="tab resources" data-group="primary" data-tab="resources">
+            <ol class="list resource-list">
+                {{#each resources as |resource index|}}
+                <li class="resource list-item flexrow" data-item-id="{{resource._id}}" style="vertical-align: middle;">
+                    <p class="resource-name resource-name-column" style="font-size=21px">
+                        {{resource.name}}
+                    </p>
+                    <div class="flexrow" , style="justify-content: center; text-align:center">
+                        <a class="resource-control resource-inc" title="Increase resource"> <i
+                                class="fas fa-plus"></i></a>
+                        {{#if resource.system.min}} {{resource.system.min}} / {{/if}}
+                        {{resource.system.value}} /
+                        {{resource.system.max}}
+                        <a class="resource-control resource-dec" title="Decrease resource"> <i
+                                class="fas fa-minus"></i></a>
+                    </div>
+                    <div class="resource-controls resource-controls-column flexrow">
+                        <a class="resource-control resource-open" title="Open resource"> <i class="fas fa-edit"></i></a>
+                        <a class="resource-control resource-delete" title="Delete resource"> <i
+                                class="fas fa-trash"></i></a>
+                    </div>
+                </li>
+                {{/each}}
+            </ol>
+            <p>
+                <a class="resource-control resource-add" title="Add New resource"><i class="fas fa-plus"></i> Add New
+                    resource</a>
+            </p>
+            <hr class="solid">
+            </hr>
         </div>
         <div class="tab gifts" data-group="primary" data-tab="gifts">
             {{> "systems/heartcore/templates/partials/gift-list.html" title="Primary"

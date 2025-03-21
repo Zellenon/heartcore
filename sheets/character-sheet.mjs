@@ -35,6 +35,7 @@ export default class CharacterSheet extends ActorSheet {
       dragDrop: [
         { dragSelector: ".attribute-list .attribute", dropSelector: null },
         { dragSelector: ".gift-list .gift", dropSelector: null },
+        { dragSelector: ".resource-list .resource", dropSelector: null },
       ],
     });
   }
@@ -48,6 +49,7 @@ export default class CharacterSheet extends ActorSheet {
     this.#populateAttributeStatusProperties(context);
     this.#populateSwingAttributeOptions(context);
     this.#populateGifts(context);
+    this.#populateResources(context);
     this.#populateCustomRolls(context);
     this.#populateConstants(context);
 
@@ -82,6 +84,20 @@ export default class CharacterSheet extends ActorSheet {
     for (let item of context.items) {
       if (item.type == "attribute") {
         context.attributes.push(item);
+      }
+    }
+  }
+
+  /**
+   * Iterate all owned items and embed a collection containing only the resources into the context for easy access.
+   * @param context
+   * @private
+   */
+  #populateResources(context) {
+    context.resources = [];
+    for (let item of context.items) {
+      if (item.type == "resource") {
+        context.resources.push(item);
       }
     }
   }
@@ -216,6 +232,11 @@ export default class CharacterSheet extends ActorSheet {
     html.find(".attribute-wound").click(this.#onAttributeWound.bind(this));
     html.find(".attribute-add").click(this.#onAttributeAdd.bind(this));
     html.find(".attribute-delete").click(this.#onAttributeDelete.bind(this));
+    html.find(".resource-add").click(this.#onResourceAdd.bind(this));
+    html.find(".resource-inc").click(this.#onResourceInc.bind(this));
+    html.find(".resource-dec").click(this.#onResourceDec.bind(this));
+    html.find(".resource-open").click(this.#onResourceOpen.bind(this));
+    html.find(".resource-delete").click(this.#onResourceDelete.bind(this));
     html.find(".gift-add").click(this.#onGiftAdd.bind(this));
     html.find(".gift-delete").click(this.#onGiftDelete.bind(this));
     html.find(".custom-roll-add").click(this.#onCustomRollAdd.bind(this));
@@ -364,6 +385,80 @@ export default class CharacterSheet extends ActorSheet {
 
     const attribute = this.#getItemFromListEvent(event);
     attribute.delete();
+  }
+
+  /**
+   * Handle event when the user adds an resource.
+   * @param event
+   * @private
+   */
+  async #onResourceAdd(event) {
+    event.preventDefault();
+
+    const itemData = {
+      name: "New Resource",
+      type: "resource",
+    };
+
+    return await Item.create(itemData, { parent: this.actor });
+  }
+
+  /**
+   * Handle event when the user increments a resource.
+   * @param event
+   * @private
+   */
+  #onResourceInc(event) {
+    event.preventDefault();
+
+    const resource = this.#getItemFromListEvent(event);
+    resource.update({
+      "system.value": Math.min(
+        Math.max(resource.system.value + 1, resource.system.min),
+        resource.system.max,
+      ),
+    });
+  }
+
+  /**
+   * Handle event when the user decrements a resource.
+   * @param event
+   * @private
+   */
+  #onResourceDec(event) {
+    event.preventDefault();
+
+    const resource = this.#getItemFromListEvent(event);
+    resource.update({
+      "system.value": Math.min(
+        Math.max(resource.system.value - 1, resource.system.min),
+        resource.system.max,
+      ),
+    });
+  }
+
+  /**
+   * Handle event when the user opens an resource.
+   * @param event
+   * @private
+   */
+  #onResourceOpen(event) {
+    event.preventDefault();
+
+    const resource = this.#getItemFromListEvent(event);
+    resource.sheet.render(true);
+  }
+
+  /**
+   * Handle event when the user deletes an resource.
+   * @param event
+   * @private
+   */
+  #onResourceDelete(event) {
+    event.preventDefault();
+
+    const resource = this.#getItemFromListEvent(event);
+    resource.delete();
   }
 
   /**

@@ -1,0 +1,23 @@
+<form class="flexcol {{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <h1>
+            <input name="name" type="text" value="{{data.name}}" placeholder="Name" />
+        </h1>
+    </header>
+    <section class="sheet-body">
+        <div class="flexrow">
+            <div class="flexcol">
+                <label class="resource-label" for="min">Min:</label>
+                <input type="text" name="system.min" id="min" value="{{data.system.min}}" />
+            </div>
+            <div class="flexcol">
+                <label class="resource-label" for="value">Current:</label>
+                <input type="text" name="system.value" id="value" value="{{data.system.value}}" />
+            </div>
+            <div class="flexcol">
+                <label class="resource-label" for="max">Max:</label>
+                <input type="text" name="system.max" id="max" value="{{data.system.max}}" />
+            </div>
+        </div>
+    </section>
+</form>
